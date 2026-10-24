@@ -1,0 +1,32 @@
+# Python and local tooling
+__pycache__/
+*.pyc
+.venv/
+.uv-cache/
+.DS_Store
+Thumbs.db
+
+# release output (built by tools/make_release.py, shared through Drive)
+dist/
+*.zip
+
+# never in this repository: keys, access files, workspaces, assignments, student files
+.env
+*.key
+*.m241access
+grading.db
+grading.db-*
+*.db
+workspaces/
+assignments/
+submissions/
+export/
+backups/
+logs/
+packages/
+classlist.*
+*.pdf
+
+# screenshots: they show student work
+*.png
+!grader_app/**/*.png
