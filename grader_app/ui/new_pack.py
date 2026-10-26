@@ -152,6 +152,11 @@ class NewPackDialog(QDialog):
         ok.clicked.connect(self.save)
         btns.addWidget(ok)
         outer.addLayout(btns)
+        if state.is_demo:                       # the demo's own handout and guide, ready for Draft with AI
+            src = state.workspace / "sample files" / "Demo assignment"
+            if (src / "assignment.pdf").exists():
+                self.assignment.setText(str(src / "assignment.pdf"))
+                self.guide.setText(str(src / "instructor_guide.pdf"))
         self._total()
 
     # table ------------------------------------------------------------------

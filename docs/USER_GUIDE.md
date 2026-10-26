@@ -6,6 +6,10 @@ The AI pre-screens each submission and points to what needs a closer look. The g
 
 The app reads each student's PDF, runs a set of automatic checks, and asks an AI model to pre-screen the work against the assignment and rubric. The AI never grades. It marks which rubric rows need a closer look, shows where in the PDF, and lists possible integrity problems. The grader reads the work, chooses every rubric level, decides every finding, and the app produces one feedback PDF per student.
 
+## A guided tour first
+
+*Help › Take the tour* opens a demo workspace with six made-up students and walks through the four tabs in about three minutes, pointing at each button as it goes. No key is needed: the demo comes with AI results written in advance. With an API key saved, the AI parts work in the demo too, on the made-up students: *Re-screen selected* and *Start*, *Re-run AI* in Review, and *New from documents…* to have the AI draft a rubric from the demo's handout and guide (in its *sample files* folder). *Skip tour* ends it at any step, and the links at the top of each note jump to a tab's part of the tour. The app offers the tour on the first start. Three demo students are already graded and three are left to try. The yellow *Demo workspace · Leave* button goes back to the workspace that was open before. Starting the tour from your own workspace gives a fresh demo, so nothing tried there is kept.
+
 ## Before you start
 
 You need four things:

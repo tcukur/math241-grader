@@ -15,6 +15,10 @@ from pathlib import Path
 import pymupdf
 
 ZERO_WIDTH = dict.fromkeys(map(ord, "\u200b\u200c\u200d\ufeff"), None)
+# typographic ligatures (LaTeX and many fonts write "fi" as one character): read them as plain letters, so
+# "Verification" or "polyfit" in a report is found when searched for
+ZERO_WIDTH.update({ord("\ufb00"): "ff", ord("\ufb01"): "fi", ord("\ufb02"): "fl", ord("\ufb03"): "ffi",
+                   ord("\ufb04"): "ffl", ord("\ufb05"): "st", ord("\ufb06"): "st"})
 ID_RE = re.compile(r"\b2\d{7}\b")          # Bilkent student IDs (8 digits, start with 2)
 EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
 PATH_USER_RE = re.compile(r"(?i)(/Users/|/home/|C:\\Users\\|C:/Users/)([^/\\\s]+)")

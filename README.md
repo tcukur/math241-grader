@@ -6,7 +6,7 @@ This repository holds the app only. Assignments (with their solutions) and works
 
 ## For graders
 
-Download the newest `MATH241_Grader_<version>.zip` from the releases folder you were given, unzip it on your own computer and run the starter for your system. The user guide is inside the app under *Help › User guide*, and *Help › What's new* lists the changes in each version.
+Download the newest `MATH241_Grader_<version>.zip` from the releases folder you were given, unzip it on your own computer and run the starter for your system. New to the app? Choose *Help › Take the tour*. It opens a demo with six made-up students and walks through every step in about three minutes, with no API key needed. The user guide is inside the app under *Help › User guide*, and *Help › What's new* lists the changes in each version.
 
 ## For maintainers
 

@@ -2,6 +2,13 @@
 
 The version you are running is shown in the bar at the top left and under *Help › About*. All versions were released in October 2026.
 
+## 0.8.0: Guided tour
+
+- **Take the tour** under *Help*, and offered on the first start. It opens a demo workspace with six made-up students and a short assignment, and walks through Setup, Pre-screen, Review and grade, and Export, lighting up each part it explains. Every step has *Skip tour*, *Back* and *Next*, and links to jump to any tab's part of the tour. Arrow keys and Enter move on, Escape ends it.
+- The demo needs no key: its AI results are written in advance. With a key saved, the AI parts work in the demo too, on the made-up students: re-screening, *Re-run AI* and *New from documents…*. Three students are already graded, so the overview and the export have something to show, and three are left to try, including two with similar work to compare side by side.
+- A yellow *Demo workspace · Leave* button shows while the demo is open and goes back to the workspace open before. The demo is never reopened at start or listed under recent workspaces.
+- Text written with typographic ligatures (common in LaTeX PDFs, where "fi" is one character) is now read as plain letters, so headings such as "Verification" and words such as "polyfit" are recognized by the automatic checks.
+
 ## 0.7.3
 
 - The grading panel now saves a student only when something was changed on screen. The student it loads in the background when a workspace opens (the first in the list, even if the Review tab is never visited) can no longer be written back over newer results, for example after a pre-screen run, at the 15-minute backup or when the app closes.

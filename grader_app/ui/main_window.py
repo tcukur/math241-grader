@@ -132,11 +132,23 @@ class MainWindow(QMainWindow):
             self.pages[sa] = widget
             self.tabs.addTab(sa, title)
         self.setMinimumSize(640, 480)
+        self.demo_btn = QPushButton("Demo workspace · Leave")
+        self.demo_btn.setObjectName("demobadge")
+        self.demo_btn.setStyleSheet("QPushButton#demobadge { background: #fde68a; color: #78350f; border: none; "
+                                    "border-radius: 8px; font-weight: 600; padding: 5px 12px; }"
+                                    "QPushButton#demobadge:hover { background: #fcd34d; }")
+        self.demo_btn.setCursor(Qt.PointingHandCursor)
+        self.demo_btn.setToolTip("Made-up students for trying the app. Click to go back to your own work.")
+        self.demo_btn.clicked.connect(self.leave_demo)
+        self.demo_btn.hide()
+        self.tabs.add_right(self.demo_btn)
         help_btn = QPushButton("Help")
         help_btn.setObjectName("appbarbtn")
         help_btn.setCursor(Qt.PointingHandCursor)
         help_btn.setToolTip("User guide, what's new and version")
         menu = QMenu(help_btn)
+        menu.addAction("Take the tour", self.start_tour)
+        menu.addSeparator()
         menu.addAction("User guide", lambda: self._help("guide"))
         menu.addAction("What's new", lambda: self._help("changes"))
         menu.addAction("Open log folder", self._open_logs)
@@ -167,16 +179,99 @@ class MainWindow(QMainWindow):
                 self.state.open_workspace(last)
             except Exception:  # noqa: BLE001
                 pass  # the Setup tab lets the user open it again and shows the reason
+        if not self.state.workspace and not QSettings().value("tour_offer_off", False, type=bool):
+            QTimer.singleShot(500, self._offer_tour)       # a first start: offer the tour once the window is up
 
     def _help(self, kind: str):
         dlg = HelpDialog(self, kind)
         dlg.show()
         self._help_dialogs = [d for d in getattr(self, "_help_dialogs", []) if d.isVisible()] + [dlg]
 
+    # the tour and the demo workspace ------------------------------------------------------------------
+    def _offer_tour(self):
+        from PySide6.QtWidgets import QMessageBox
+        box = QMessageBox(self)
+        box.setWindowTitle("Welcome")
+        box.setIcon(QMessageBox.NoIcon)
+        box.setText("<b>Welcome to the MATH241 Grader</b>")
+        box.setInformativeText("New here? A short tour shows each step on six made-up students. It takes about "
+                               "three minutes and needs no API key. You can also start it later from "
+                               "Help › Take the tour.")
+        go = box.addButton("Take the tour", QMessageBox.AcceptRole)
+        box.addButton("Not now", QMessageBox.RejectRole)
+        never = box.addButton("Don't ask again", QMessageBox.DestructiveRole)
+        go.setObjectName("primary")
+        go.style().unpolish(go)
+        go.style().polish(go)
+        box.setDefaultButton(go)
+        box.exec()
+        if box.clickedButton() is never:
+            QSettings().setValue("tour_offer_off", True)
+        elif box.clickedButton() is go:
+            QSettings().setValue("tour_offer_off", True)
+            self.start_tour()
+
+    def start_tour(self):
+        """Open a fresh demo workspace and walk through it. The workspace that was open is remembered, so the
+        user can go back to it."""
+        from PySide6.QtGui import QCursor
+        from PySide6.QtWidgets import QApplication, QMessageBox
+        from .. import demo
+        from ..workspace import local_workspaces_dir
+        if getattr(self, "_tour", None) is not None:
+            return
+        st = self.state
+        if not st.is_demo:
+            QSettings().setValue("before_demo", str(st.workspace) if st.workspace else "")
+            self.review._save()
+            folder = local_workspaces_dir() / demo.DEMO_NAME
+            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+            try:
+                try:
+                    demo.build(folder)
+                except OSError:
+                    # an older demo could not be removed (for example still open elsewhere): use a new folder
+                    import time
+                    folder = local_workspaces_dir() / f"{demo.DEMO_NAME} {time.strftime('%H%M%S')}"
+                    demo.build(folder)
+                st.open_workspace(folder)
+            except Exception as e:  # noqa: BLE001
+                QApplication.restoreOverrideCursor()
+                QMessageBox.warning(self, "Tour", f"The demo workspace could not be made: {e}")
+                return
+            QApplication.restoreOverrideCursor()
+        from .tour import TourOverlay
+        self.tabs.setCurrentIndex(0)
+        self._tour = TourOverlay(self, self._tour_done)
+
+    def _tour_done(self, completed: bool):
+        self._tour = None
+        if not completed:
+            self.tabs.setCurrentIndex(0)
+
+    def leave_demo(self):
+        """Back to the workspace that was open before the demo, or to an empty Setup tab."""
+        from PySide6.QtWidgets import QMessageBox
+        before = QSettings().value("before_demo", "")
+        self.review._save()
+        if before and (Path(before) / "grading.db").exists():
+            try:
+                self.state.open_workspace(before)
+                self.tabs.setCurrentIndex(0)
+                return
+            except Exception as e:  # noqa: BLE001
+                QMessageBox.warning(self, "Leave the demo", f"Could not open {before}: {e}")
+        self.tabs.setCurrentIndex(0)
+        QMessageBox.information(self, "Your own workspace",
+                                "Use New… next to Workspace to make a workspace for your assignment, or Open… for "
+                                "one you already have. The demo closes when you do.")
+
     def _title(self):
+        self.demo_btn.setVisible(self.state.is_demo)
         ws = self.state.workspace
         self.setWindowTitle(f"{APP_NAME} {APP_VERSION}" + (f"  ·  {ws.name}" if ws else ""))
-        self.tabs.sub.setText((f"{ws.name}  ·  " if ws else "No workspace open  ·  ") + f"v{APP_VERSION}")
+        name = "Demo, made-up students" if self.state.is_demo else ws.name if ws else ""
+        self.tabs.sub.setText((f"{name}  ·  " if ws else "No workspace open  ·  ") + f"v{APP_VERSION}")
         self.tabs.sub.setToolTip(str(ws) if ws else "")
 
     def _tab_changed(self, i):
@@ -213,6 +308,11 @@ class MainWindow(QMainWindow):
                 self.state.backup()
         except Exception:  # noqa: BLE001
             pass
+
+    def resizeEvent(self, e):
+        super().resizeEvent(e)
+        if getattr(self, "_tour", None) is not None:
+            self._tour.place()
 
     def closeEvent(self, e):
         self.review._save()

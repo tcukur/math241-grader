@@ -247,9 +247,12 @@ class AppState(QObject):
         _workspace = folder
         self.workspace = folder
         self.store = store
-        QSettings().setValue("last_workspace", str(folder))
-        recent = [str(folder)] + [p for p in (QSettings().value("recent_workspaces", []) or []) if p != str(folder)]
-        QSettings().setValue("recent_workspaces", recent[:8])
+        from ..demo import is_demo
+        if not is_demo(store):          # the demo is never reopened at start or listed with real work
+            QSettings().setValue("last_workspace", str(folder))
+            recent = [str(folder)] + [p for p in (QSettings().value("recent_workspaces", []) or [])
+                                      if p != str(folder)]
+            QSettings().setValue("recent_workspaces", recent[:8])
         self.pack = None
         try:
             self.last_repair = bring_in(self.store)
@@ -304,6 +307,11 @@ class AppState(QObject):
     def set_meta(self, key, value):
         if self.store:
             self.store.set_meta(key, value)
+
+    @property
+    def is_demo(self) -> bool:
+        from ..demo import is_demo
+        return is_demo(self.store)
 
     @property
     def is_ta(self) -> bool:

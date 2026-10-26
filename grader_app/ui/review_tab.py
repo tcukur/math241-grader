@@ -683,6 +683,7 @@ class ReviewTab(QWidget):
         legend.setTextFormat(Qt.RichText)
         legend.setWordWrap(True)
         ll.addWidget(legend)
+        self.legend, self.left_col = legend, left
         split.addWidget(left)
 
         # center: pdf
@@ -735,6 +736,7 @@ class ReviewTab(QWidget):
         fb.addWidget(self.next_btn)
         fl.addLayout(fb)
         rl.addWidget(footer)
+        self.footer = footer
         split.addWidget(right)
         left.setMinimumWidth(170)
         self.pdf.setMinimumWidth(260)
@@ -1449,6 +1451,11 @@ class ReviewTab(QWidget):
 
     def start_rerun(self, sub_id: str, dry: bool, model: str = "", effort: str = ""):
         if sub_id in self.rerun_threads:
+            return
+        if self.state.is_demo and not dry and not self.state.api_key():
+            QMessageBox.information(self, "Demo workspace",
+                                    "The demo comes with sample AI results. To try the real AI on these made-up "
+                                    "students, save an OpenAI API key on the Setup tab first.")
             return
         self.state.store.reset_screen(sub_id)
         glog.info("Re-run started for %s (model %s, effort %s, %s)", sub_id, model or "default",

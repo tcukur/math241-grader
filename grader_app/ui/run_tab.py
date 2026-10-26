@@ -98,7 +98,8 @@ class RunTab(QWidget):
         self.redo_btn = QPushButton("Re-screen selected")
         self.redo_btn.clicked.connect(self.redo_selected)
         opts_items.append(self.redo_btn)
-        lay.addWidget(flow(*opts_items))
+        self.opts_row = flow(*opts_items)
+        lay.addWidget(self.opts_row)
 
         note_row = QHBoxLayout()
         nl = QVBoxLayout()
@@ -399,6 +400,13 @@ class RunTab(QWidget):
 
     def start(self):
         st = self.state
+        if st.is_demo and not self.dry.isChecked() and not st.api_key():
+            QMessageBox.information(self, "Demo workspace",
+                                    "The demo comes with sample AI results, so every student is already "
+                                    "pre-screened. To try the real AI on these made-up students, save an OpenAI API "
+                                    "key on the Setup tab, select students here, press Re-screen selected, then "
+                                    "Start.")
+            return
         key = st.api_key()
         if not self.dry.isChecked() and not key:
             QMessageBox.information(self, "API key needed",
