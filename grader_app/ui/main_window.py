@@ -142,6 +142,15 @@ class MainWindow(QMainWindow):
         self.demo_btn.clicked.connect(self.leave_demo)
         self.demo_btn.hide()
         self.tabs.add_right(self.demo_btn)
+        self.asg_btn = QPushButton("Assignment")
+        self.asg_btn.setObjectName("appbarbtn")
+        self.asg_btn.setCursor(Qt.PointingHandCursor)
+        self.asg_btn.setToolTip("The rubric, the handout and the solution, in a window you can keep open while "
+                                "grading")
+        self.asg_btn.clicked.connect(self.show_assignment)
+        self.tabs.add_right(self.asg_btn)
+        self.state.pack_changed.connect(self._asg_enabled)
+        self.state.workspace_changed.connect(self._asg_enabled)
         help_btn = QPushButton("Help")
         help_btn.setObjectName("appbarbtn")
         help_btn.setCursor(Qt.PointingHandCursor)
@@ -172,6 +181,7 @@ class MainWindow(QMainWindow):
         self._backup_timer.timeout.connect(self._auto_backup)
         self._backup_timer.start(15 * 60 * 1000)      # every 15 minutes, only if something changed
         self._title()
+        self._asg_enabled()
 
         last = QSettings().value("last_workspace", "")
         if last and Path(last).exists() and (Path(last) / "grading.db").exists():
@@ -186,6 +196,15 @@ class MainWindow(QMainWindow):
         dlg = HelpDialog(self, kind)
         dlg.show()
         self._help_dialogs = [d for d in getattr(self, "_help_dialogs", []) if d.isVisible()] + [dlg]
+
+    def _asg_enabled(self):
+        self.asg_btn.setEnabled(bool(self.state.pack))
+
+    def show_assignment(self):
+        from .assignment_view import AssignmentWindow
+        if getattr(self, "_asg", None) is None:
+            self._asg = AssignmentWindow(self.state, self)
+        self._asg.show_again()
 
     # the tour and the demo workspace ------------------------------------------------------------------
     def _offer_tour(self):
@@ -316,6 +335,8 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, e):
         self.review._save()
+        if getattr(self, "_asg", None) is not None and self._asg.isVisible():
+            self._asg.close()                   # remembers where it was
         try:
             from ..backup import changed_since_last_backup
             if self.state.workspace and changed_since_last_backup(self.state.workspace / "grading.db"):

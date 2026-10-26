@@ -19,6 +19,10 @@ You need four things:
 - **The submissions.** In Moodle, open the assignment, choose *View all submissions*, then *Download all submissions*. Keep the ZIP as it is.
 - **The class list.** The course gradebook export from Moodle (.xlsx or .csv).
 
+## The assignment at hand
+
+The **Assignment** button in the top bar opens the rubric, the handout and the solution in a separate window, from any tab. Keep it open next to the grading, or on a second screen. The rubric page shows each item with its points, what each level means, the grading rules, the accepted alternatives and what each integrity finding costs. These are the files copied into the workspace with the assignment, so a TA who receives a workspace has them too.
+
 ## 1. Setup
 
 1. **Workspace.** Press *New…* and choose an empty folder for this assignment, or *Open…* to continue one. *Open…* also accepts a folder that contains the workspace somewhere inside it. Everything is saved in that one folder as you go: the grading, and copies of the student PDFs, the assignment and the class list.

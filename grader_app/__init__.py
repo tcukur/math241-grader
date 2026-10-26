@@ -1,4 +1,4 @@
 """MATH 241 AI-assisted assignment grader."""
 
 APP_NAME = "MATH241 Grader"
-APP_VERSION = "0.8.0"
+APP_VERSION = "0.8.1"

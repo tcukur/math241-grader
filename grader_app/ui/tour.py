@@ -112,6 +112,10 @@ def steps(win) -> list[Step]:
              "come as findings. You decide each one, and only confirmed findings cost points. Ceren and Deniz "
              "share long passages: <b>Compare side by side</b> shows them next to each other.",
              findings, show_finding),
+        Step(2, "The assignment, always at hand",
+             "<b>Assignment</b> opens the rubric with what each level means, the handout and the solution in a "
+             "window of their own. Keep it open beside the grading or on a second screen.",
+             lambda: [win.asg_btn]),
         Step(2, "Finish a student",
              "The total updates as you grade. <b>Mark reviewed and next</b> saves and moves on. Keyboard "
              "shortcuts let you grade without the mouse.",

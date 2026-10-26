@@ -2,6 +2,10 @@
 
 The version you are running is shown in the bar at the top left and under *Help › About*. All versions were released in October 2026.
 
+## 0.8.1
+
+- **Assignment** button in the top bar, on every tab. It opens the rubric, the handout and the solution (and the reference code, when there is one) in a window of their own, so they can stay open beside the grading or on a second screen while you move from student to student. The rubric page lists each item with its current points and what to look at, what each level means, the grading rules, the accepted alternatives and what each integrity finding costs. Its size and place are remembered.
+
 ## 0.8.0: Guided tour
 
 - **Take the tour** under *Help*, and offered on the first start. It opens a demo workspace with six made-up students and a short assignment, and walks through Setup, Pre-screen, Review and grade, and Export, lighting up each part it explains. Every step has *Skip tour*, *Back* and *Next*, and links to jump to any tab's part of the tour. Arrow keys and Enter move on, Escape ends it.
