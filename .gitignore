@@ -30,3 +30,5 @@ classlist.*
 # screenshots: they show student work
 *.png
 !grader_app/**/*.png
+# README screenshots, taken on the demo workspace (made-up students only)
+!docs/images/*.png

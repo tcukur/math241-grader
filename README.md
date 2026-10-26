@@ -4,6 +4,43 @@ A desktop app for grading AI-assisted assignments in MATH 241 at Bilkent Univers
 
 This repository holds the app only. Assignments (with their solutions) and workspaces (with student papers and grades) are shared separately and must never be added here.
 
+## What it looks like
+
+These screenshots come from the built-in demo, so every student in them is made up.
+
+**Review and grade.** The student's PDF in the middle. On the right, what the AI flagged for each rubric item, the level the grader picks, and comments for the student.
+
+![Review and grade](docs/images/review.png)
+
+**Pre-screen.** The AI looks at every submission first. Each line shows what needs a closer look, and the similarity check runs on its own after the AI has finished.
+
+![Pre-screen](docs/images/prescreen.png)
+
+**Compare side by side.** When two papers share long passages, both are shown together with the shared text highlighted, so the grader can decide.
+
+![Compare side by side](docs/images/compare.png)
+
+**Export.** The grade overview, then one feedback PDF per student and the files for Moodle.
+
+![Export](docs/images/export.png)
+
+<details>
+<summary>More: Setup, the Assignment window and the guided tour</summary>
+
+**Setup.** One workspace per assignment, with the assignment, the class list and the submissions imported in one step.
+
+![Setup](docs/images/setup.png)
+
+**Assignment.** The rubric, the handout and the solution in a window that can stay open while grading.
+
+![Assignment](docs/images/assignment.png)
+
+**Guided tour.** *Help › Take the tour* walks through each step on the demo.
+
+![Guided tour](docs/images/tour.png)
+
+</details>
+
 ## For graders
 
 Download the newest `MATH241_Grader_<version>.zip` from the releases folder you were given, unzip it on your own computer and run the starter for your system. New to the app? Choose *Help › Take the tour*. It opens a demo with six made-up students and walks through every step in about three minutes, with no API key needed. The user guide is inside the app under *Help › User guide*, and *Help › What's new* lists the changes in each version.
