@@ -1,0 +1,154 @@
+{
+  "_about": "Default settings for new assignments made with 'New from documents'. The assignment's own pack.json, inside its workspace, is what grading uses.",
+  "course": "MATH 241",
+  "model": {
+    "name": "gpt-6-luna",
+    "label": "GPT-6 Luna (default, cheapest)",
+    "escalation_name": "gpt-6-sol",
+    "escalation_label": "GPT-6 Sol (stronger, much more expensive)",
+    "reasoning_effort": "medium",
+    "max_output_tokens": 16000,
+    "image_detail": "auto",
+    "max_report_images": 8,
+    "max_chat_chars": 160000,
+    "max_code_chars": 60000,
+    "send_appendix_images": true,
+    "max_appendix_images": 30,
+    "appendix_image_detail": "auto"
+  },
+  "report": {
+    "appendix_chat_pattern": "^(\\d+\\s+)?appendix\\s*a\\b",
+    "appendix_code_pattern": "^(\\d+\\s+)?appendix\\s*b\\b"
+  },
+  "levels": [
+    100,
+    75,
+    50,
+    25,
+    0
+  ],
+  "level_descriptions": {
+    "100": "Correct and complete.",
+    "75": "Mostly correct; one important part is missing or wrong.",
+    "50": "Main idea is present, but several important parts are missing or wrong.",
+    "25": "Only limited correct work is shown.",
+    "0": "Missing, unrelated, or no usable work."
+  },
+  "integrity": {
+    "total_cap": 100,
+    "categories": [
+      {
+        "id": "untraceable_results",
+        "label": "Results or checks not produced by the submitted work",
+        "description": "Reported numerical results or verification values that the submitted code, its shown output, or the AI record do not produce.",
+        "points": 5,
+        "row_cap_pct": 25,
+        "half_row_cap_pct": 50,
+        "default_rows": [
+          "checks"
+        ],
+        "student_text": "Some reported results or verification values could not be traced to the code, output or AI record you submitted.",
+        "ta_check": "Look for the reported values in the code (Appendix B) and in any output shown in the AI record. Confirm only if they are not produced there."
+      },
+      {
+        "id": "incomplete_record",
+        "label": "AI record incomplete or summarized",
+        "description": "Responses replaced by descriptions, conversations cut off, a task's conversation missing, or evidence of an AI conversation that was not included.",
+        "points": 8,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "The AI interaction record was not complete. The assignment required the full chronological record, including all responses.",
+        "ta_check": "Open the AI record and check whether responses are replaced by descriptions, cut off, or whether a task's conversation is missing."
+      },
+      {
+        "id": "unsupported_claim",
+        "label": "Claimed process not supported by the AI record",
+        "description": "The report describes a correction, check or step that does not appear in the submitted AI record or code.",
+        "points": 4,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "The report describes work (for example a correction or check) that does not appear in your submitted AI record or code.",
+        "ta_check": "Find the step or correction the report describes, then look for it in the AI record and the code."
+      },
+      {
+        "id": "missing_record",
+        "label": "AI record missing",
+        "description": "No AI interaction record was submitted at all.",
+        "points": 60,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "No AI interaction record was submitted. The assignment required the complete record in Appendix A.",
+        "ta_check": "Check the end of the PDF for any AI conversation, under any heading. Confirm if there is none."
+      },
+      {
+        "id": "link_only_record",
+        "label": "AI record given only as a link",
+        "description": "A share link was given instead of the AI conversation itself in the PDF.",
+        "points": 30,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "The AI record was given only as a link. The assignment required the complete conversation in the PDF.",
+        "ta_check": "Check that the PDF holds only a link and not the conversation. You may open the link, but it is not required."
+      },
+      {
+        "id": "chat_as_images",
+        "label": "AI record submitted as images",
+        "description": "The AI record was given as screenshots, scans or printed pages instead of selectable text.",
+        "points": 20,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "The AI record was submitted as images. It had to be selectable text.",
+        "ta_check": "Scroll through the AI record pages. Confirm if the conversation is pictures (screenshots, printed pages) rather than selectable text."
+      },
+      {
+        "id": "code_as_images",
+        "label": "Code submitted as images",
+        "description": "The code was given as screenshots, scans or printed pages instead of selectable text.",
+        "points": 20,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "The code was submitted as images. It had to be selectable text.",
+        "ta_check": "Scroll to the code. Confirm if it is a picture rather than selectable text."
+      },
+      {
+        "id": "report_as_images",
+        "label": "Report text submitted as images",
+        "description": "Report pages given as images instead of selectable text. Handwritten derivations are allowed as images and are not a violation.",
+        "points": 20,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "Parts of the report were submitted as images. Only handwritten derivations may be images.",
+        "ta_check": "Look at the listed report pages. Reject if they are handwritten derivations, which are allowed. Confirm if typed text was pasted as an image."
+      },
+      {
+        "id": "other",
+        "label": "Other integrity concern",
+        "description": "Any other concrete concern the TA wants the instructor to see.",
+        "points": 0,
+        "row_cap_pct": null,
+        "half_row_cap_pct": null,
+        "default_rows": [],
+        "student_text": "An integrity concern was noted by the grader.",
+        "ta_check": "Read the note and decide whether it is a real problem."
+      }
+    ],
+    "exclusive_groups": [
+      [
+        "missing_record",
+        "link_only_record"
+      ]
+    ]
+  },
+  "chat_placeholder_patterns": [
+    "\\((?:the\\s+)?AI\\s+(?:provided|ran|generated|gave|wrote|returned|responded|produced|then|output)\\b",
+    "\\[(?:AI|assistant)\\s+(?:response|output)\\s+(?:omitted|removed|truncated)",
+    "(?:response|output)\\s+(?:omitted|truncated)\\s+for\\s+(?:brevity|space)"
+  ]
+}

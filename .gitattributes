@@ -1,0 +1,7 @@
+# the Windows starter needs Windows line endings, the Mac starter Unix ones
+*.bat text eol=crlf
+*.command text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.ttf binary
+*.png binary
